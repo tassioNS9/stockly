@@ -23,7 +23,12 @@ const ProductsPage = async () => {
         </Button>
       </div>
 
-      <DataTable columns={productTableColumns} data={products} />
+      <DataTable
+        columns={productTableColumns}
+        data={JSON.parse(JSON.stringify(products))}
+      />
+      {/*Quando passamos dados de um Server Component para um Client Component apenas alguns dados especificos são aceitos e o Decimal não está incluso por isso tivemos que fazer 
+      essa conversão JSON.parse(JSON.stringify(products)  */}
     </div>
   );
 };
