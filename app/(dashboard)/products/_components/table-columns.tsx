@@ -37,7 +37,7 @@ export const productTableColumns: ColumnDef<Product>[] = [
     cell: (row) => {
       const product = row.row.original;
       const label = getStatusLabel(product.status);
-      return <Badge variant="destructive">{label}</Badge>;
+      return <Badge>{label}</Badge>;
     },
   },
   {
