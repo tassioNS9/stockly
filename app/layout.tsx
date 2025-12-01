@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Siderbar from "./(dashboard)/_components/sidebar";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Siderbar />
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   );
