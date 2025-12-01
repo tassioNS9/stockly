@@ -21,16 +21,11 @@ import { Button } from "@/app/_components/ui/button";
 import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
 import DeleteProductDialogContent from "./delete-dialog-content";
+import UpsertProductDialogContent from "./upsert-dialog-content";
+import { useState } from "react";
 
 const getStatusLabel = (status: string) => {
   if (status == "IN_STOCK") {
@@ -72,10 +67,13 @@ export const productTableColumns: ColumnDef<Product>[] = [
     accessorKey: "actions",
     header: "Ações",
     cell: (row) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [editDialogOpen, setEditDialogOpen] = useState(false);
       const product = row.row.original;
+
       return (
         <AlertDialog>
-          <Dialog>
+          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost">
@@ -106,6 +104,15 @@ export const productTableColumns: ColumnDef<Product>[] = [
                 </AlertDialogTrigger>
               </DropdownMenuContent>
             </DropdownMenu>
+            <UpsertProductDialogContent
+              defaultValues={{
+                id: product.id,
+                name: product.name,
+                price: Number(product.price),
+                stock: product.stock,
+              }}
+              onSuccess={() => setEditDialogOpen(false)}
+            />
             <DeleteProductDialogContent productId={product.id} />
           </Dialog>
         </AlertDialog>

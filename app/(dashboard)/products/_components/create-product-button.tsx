@@ -18,7 +18,7 @@ const CreateProductButton = () => {
           Novo produto
         </Button>
       </DialogTrigger>
-      <UpsertProductDialogContent setDialogIsOpen={setDialogIsOpen} />
+      <UpsertProductDialogContent onSuccess={() => setDialogIsOpen(false)} />
     </Dialog>
   );
 };
