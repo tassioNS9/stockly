@@ -1,9 +1,6 @@
-import { Button } from "@/app/_components/ui/button";
-import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
-
-import UpsertSheetContent from "./_components/upsert-sheet-content";
 import { getProducts } from "@/app/_data_access/product/get-product";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
+import CreateSaleButton from "./_components/create-sale-button";
 
 const SalesPage = async () => {
   const products = await getProducts();
@@ -20,15 +17,7 @@ const SalesPage = async () => {
           </span>
           <h2 className="text-xl font-semibold">Vendas</h2>
         </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button>Adicionar Venda</Button>
-          </SheetTrigger>
-          <UpsertSheetContent
-            products={products}
-            productOptions={productOptions}
-          />
-        </Sheet>
+        <CreateSaleButton products={products} productOptions={productOptions} />
       </div>
 
       {/* <DataTable
