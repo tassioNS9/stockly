@@ -17,14 +17,27 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/app/_components/ui/sheet";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/app/_components/ui/table";
+import { formatCurrency } from "@/app/_helpers/currency";
+import { Product } from "@/app/generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
   productId: z.string().uuid({
-    message: "Uuid não identificada!",
+    message: "O Produto é obrigátorio!",
   }),
   quantity: z.coerce.number().int().positive(),
 });
@@ -32,10 +45,24 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 interface UpsertSheetContentProps {
+  products: Product[];
   productOptions: ComboboxOption[];
 }
 
-const UpsertSheetContent = ({ productOptions }: UpsertSheetContentProps) => {
+interface SelectedProduct {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+const UpsertSheetContent = ({
+  products,
+  productOptions,
+}: UpsertSheetContentProps) => {
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
+    [],
+  );
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,9 +71,49 @@ const UpsertSheetContent = ({ productOptions }: UpsertSheetContentProps) => {
     },
   });
 
-  const onSubmit = () => {
-    console.log("oi");
+  const onSubmit = (data: FormSchema) => {
+    const selectedProduct = products.find(
+      (product) => product.id === data.productId,
+    );
+
+    const onDelete = (productId: string) => {
+      setSelectedProducts((currentProducts) => {
+        return currentProducts.filter((product) => product.id !== productId);
+      });
+    };
+    if (!selectedProduct) return;
+    setSelectedProducts((currentProducts) => {
+      const existingProduct = currentProducts.find(
+        (product) => product.id === selectedProduct.id,
+      );
+      if (existingProduct) {
+        return currentProducts.map((product) => {
+          if (product.id === selectedProduct.id) {
+            return {
+              ...product,
+              quantity: product.quantity + data.quantity,
+            };
+          }
+          return product;
+        });
+      }
+      return [
+        ...currentProducts,
+        {
+          ...selectedProduct,
+          price: Number(selectedProduct.price),
+          quantity: data.quantity,
+        },
+      ];
+    });
+    form.reset();
   };
+
+  const productsTotal = useMemo(() => {
+    return selectedProducts.reduce((acc, product) => {
+      return acc + product.price * product.quantity;
+    }, 0);
+  }, [selectedProducts]);
   return (
     <SheetContent className="!max-w-[700px]">
       <SheetHeader>
@@ -100,6 +167,38 @@ const UpsertSheetContent = ({ productOptions }: UpsertSheetContentProps) => {
           </Button>
         </form>
       </Form>
+
+      <Table>
+        <TableCaption>Lista dos produtos adicionados à venda.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Produto</TableHead>
+            <TableHead>Preço Unitário</TableHead>
+            <TableHead>Quantidade</TableHead>
+            <TableHead>Total</TableHead>
+            <TableHead>Ações</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {selectedProducts.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>{formatCurrency(product.price)}</TableCell>
+              <TableCell>{product.quantity}</TableCell>
+              <TableCell>
+                {formatCurrency(product.price * product.quantity)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell>{formatCurrency(productsTotal)}</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </SheetContent>
   );
 };
