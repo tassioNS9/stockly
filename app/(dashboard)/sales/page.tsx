@@ -12,6 +12,12 @@ const SalesPage = async () => {
     label: product.name,
     value: product.id,
   }));
+  const tableData = sales.map((sale) => ({
+    ...sale,
+    products,
+    productOptions,
+  }));
+  console.log(tableData, "tableData");
   return (
     <div className="mx-8 my-8 w-full space-y-8 rounded-lg bg-white p-8">
       <div className="flex w-full items-center justify-between">
@@ -21,12 +27,15 @@ const SalesPage = async () => {
           </span>
           <h2 className="text-xl font-semibold">Vendas</h2>
         </div>
-        <CreateSaleButton products={products} productOptions={productOptions} />
+        <CreateSaleButton
+          products={JSON.parse(JSON.stringify(products))}
+          productOptions={productOptions}
+        />
       </div>
 
       <DataTable
         columns={saleTableColumns}
-        data={JSON.parse(JSON.stringify(sales))}
+        data={JSON.parse(JSON.stringify(tableData))}
       />
       {/*Quando passamos dados de um Server Component para um Client Component apenas alguns dados especificos são aceitos e o Decimal não está incluso por isso tivemos que fazer 
       essa conversão JSON.parse(JSON.stringify(products)  */}

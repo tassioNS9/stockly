@@ -29,13 +29,22 @@ import {
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Sale } from "@/app/generated/prisma/client";
+import UpsertSheetContent from "./upsert-sheet-content";
+import { ComboboxOption } from "@/app/_components/ui/combobox";
+import { ProductDto } from "@/app/_data_access/product/get-product";
+import { SaleDto } from "@/app/_data_access/sale/get-sales";
 
 interface SalesTableDropdownMenuProps {
-  sale: Pick<Sale, "id">;
+  sale: Pick<SaleDto, "id" | "saleProducts">;
+  productOptions: ComboboxOption[];
+  products: ProductDto[];
 }
 
-const SalesTableDropdownMenu = ({ sale }: SalesTableDropdownMenuProps) => {
+const SalesTableDropdownMenu = ({
+  sale,
+  products,
+  productOptions,
+}: SalesTableDropdownMenuProps) => {
   const [upsertSheetIsOpen, setUpsertSheetIsOpen] = useState(false);
   const { execute } = useAction(deleteSale, {
     onSuccess: () => {
@@ -99,6 +108,18 @@ const SalesTableDropdownMenu = ({ sale }: SalesTableDropdownMenuProps) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <UpsertSheetContent
+        productOptions={productOptions}
+        products={products}
+        setSheetIsOpen={setUpsertSheetIsOpen}
+        defaultSelectedProducts={sale.saleProducts.map((saleProduct) => ({
+          id: saleProduct.productId,
+          quantity: saleProduct.quantity,
+          name: saleProduct.productName,
+          price: saleProduct.unitPrice,
+        }))}
+      />
     </Sheet>
   );
 };

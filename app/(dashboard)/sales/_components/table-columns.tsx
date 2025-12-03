@@ -14,7 +14,7 @@ interface SaleTableColumn extends SaleDto {
 
 export const saleTableColumns: ColumnDef<SaleTableColumn>[] = [
   {
-    accessorKey: "productsName",
+    accessorKey: "productNames",
     header: "Produtos",
   },
   {
@@ -40,7 +40,11 @@ export const saleTableColumns: ColumnDef<SaleTableColumn>[] = [
   {
     header: "Ações",
     cell: ({ row: { original: sale } }) => (
-      <SalesTableDropdownMenu sale={sale} />
+      <SalesTableDropdownMenu
+        sale={sale}
+        products={sale.products}
+        productOptions={sale.productOptions}
+      />
     ),
   },
 ];

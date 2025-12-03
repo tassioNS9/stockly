@@ -1,32 +1,37 @@
 import "server-only";
-//Com o server-only garante um nível de segurança de que as informações não são levadas para o bundle do JS que é enviado para o client
 
-import { db } from "../../_lib/prisma";
+import { db } from "@/app/_lib/prisma";
+
+interface SaleProductDto {
+  productId: string;
+  quantity: number;
+  unitPrice: number;
+  productName: string;
+}
 
 export interface SaleDto {
   id: string;
-  productsName: string;
+  productNames: string;
   totalProducts: number;
   totalAmount: number;
   date: Date;
+  saleProducts: SaleProductDto[];
 }
 
 export const getSales = async (): Promise<SaleDto[]> => {
   const sales = await db.sale.findMany({
     include: {
       saleProducts: {
-        include: {
-          product: true,
-        },
+        include: { product: true },
       },
     },
   });
   return sales.map((sale) => ({
     id: sale.id,
     date: sale.date,
-    productsName: sale.saleProducts
+    productNames: sale.saleProducts
       .map((saleProduct) => saleProduct.product.name)
-      .join(" * "),
+      .join(" • "),
     totalAmount: sale.saleProducts.reduce(
       (acc, saleProduct) =>
         acc + saleProduct.quantity * Number(saleProduct.unitPrice),
@@ -35,6 +40,14 @@ export const getSales = async (): Promise<SaleDto[]> => {
     totalProducts: sale.saleProducts.reduce(
       (acc, saleProduct) => acc + saleProduct.quantity,
       0,
+    ),
+    saleProducts: sale.saleProducts.map(
+      (saleProduct): SaleProductDto => ({
+        productId: saleProduct.productId,
+        productName: saleProduct.product.name,
+        quantity: saleProduct.quantity,
+        unitPrice: Number(saleProduct.unitPrice),
+      }),
     ),
   }));
 };
