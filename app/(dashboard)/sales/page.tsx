@@ -1,8 +1,12 @@
 import { getProducts } from "@/app/_data_access/product/get-product";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
+import { DataTable } from "@/app/_components/ui/data-table";
 import CreateSaleButton from "./_components/create-sale-button";
+import { getSales } from "@/app/_data_access/sale/get-sales";
+import { saleTableColumns } from "./_components/table-columns";
 
 const SalesPage = async () => {
+  const sales = await getSales();
   const products = await getProducts();
   const productOptions: ComboboxOption[] = products.map((product) => ({
     label: product.name,
@@ -20,10 +24,10 @@ const SalesPage = async () => {
         <CreateSaleButton products={products} productOptions={productOptions} />
       </div>
 
-      {/* <DataTable
-        columns={productTableColumns}
-        data={JSON.parse(JSON.stringify(products))}
-      /> */}
+      <DataTable
+        columns={saleTableColumns}
+        data={JSON.parse(JSON.stringify(sales))}
+      />
       {/*Quando passamos dados de um Server Component para um Client Component apenas alguns dados especificos são aceitos e o Decimal não está incluso por isso tivemos que fazer 
       essa conversão JSON.parse(JSON.stringify(products)  */}
     </div>
