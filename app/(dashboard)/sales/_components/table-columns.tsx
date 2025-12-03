@@ -2,18 +2,17 @@
 
 import { formatCurrency } from "@/app/_helpers/currency";
 import { ColumnDef } from "@tanstack/react-table";
-// import SalesTableDropdownMenu from "./table-dropdown-menu";
-// import { ProductDto } from "@/app/_data-access/product/get-products";
-// import { ComboboxOption } from "@/app/_components/ui/combobox";
-import { MoreHorizontalIcon } from "lucide-react";
-import { Button } from "@/app/_components/ui/button";
+import SalesTableDropdownMenu from "./table-dropdown-menu";
+import { ProductDto } from "@/app/_data_access/product/get-product";
+import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { SaleDto } from "@/app/_data_access/sale/get-sales";
-// interface SaleTableColumn {
-//   products: ProductDto[];
-//   productOptions: ComboboxOption[];
-// }
 
-export const saleTableColumns: ColumnDef<SaleDto>[] = [
+interface SaleTableColumn extends SaleDto {
+  products: ProductDto[];
+  productOptions: ComboboxOption[];
+}
+
+export const saleTableColumns: ColumnDef<SaleTableColumn>[] = [
   {
     accessorKey: "productsName",
     header: "Produtos",
@@ -40,10 +39,8 @@ export const saleTableColumns: ColumnDef<SaleDto>[] = [
   },
   {
     header: "Ações",
-    cell: () => (
-      <Button>
-        <MoreHorizontalIcon size={16} />
-      </Button>
+    cell: ({ row: { original: sale } }) => (
+      <SalesTableDropdownMenu sale={sale} />
     ),
   },
 ];
