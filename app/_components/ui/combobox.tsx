@@ -22,7 +22,7 @@ export interface ComboboxOption {
 
 interface ComboboxProps {
   options: ComboboxOption[];
-  value: string;
+  value?: string;
   onChange: (value: string) => void;
   placeholder?: string;
 }
