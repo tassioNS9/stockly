@@ -24,7 +24,7 @@ const CreateSaleButton = ({
       <UpsertSheetContent
         products={products}
         productOptions={productOptions}
-        onSubmitSucess={() => setSheetIsOpen(false)}
+        setSheetIsOpen={setSheetIsOpen}
       />
     </Sheet>
   );
