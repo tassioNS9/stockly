@@ -5,7 +5,6 @@ import CreateProductButton from "./_components/create-product-button";
 const ProductsPage = async () => {
   const products = await getProducts();
 
-  console.log(products);
   return (
     <div className="mx-8 my-8 w-full space-y-8 rounded-lg bg-white p-8">
       <div className="flex w-full items-center justify-between">

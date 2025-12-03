@@ -17,7 +17,6 @@ const SalesPage = async () => {
     products,
     productOptions,
   }));
-  console.log(tableData, "tableData");
   return (
     <div className="mx-8 my-8 w-full space-y-8 rounded-lg bg-white p-8">
       <div className="flex w-full items-center justify-between">
