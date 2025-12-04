@@ -1,7 +1,7 @@
 import { getProducts } from "@/app/_data_access/product/get-product";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { DataTable } from "@/app/_components/ui/data-table";
-import CreateSaleButton from "./_components/create-sale-button";
+import UpsertSaleButton from "./_components/create-sale-button";
 import { getSales } from "@/app/_data_access/sale/get-sales";
 import { saleTableColumns } from "./_components/table-columns";
 
@@ -26,7 +26,7 @@ const SalesPage = async () => {
           </span>
           <h2 className="text-xl font-semibold">Vendas</h2>
         </div>
-        <CreateSaleButton
+        <UpsertSaleButton
           products={JSON.parse(JSON.stringify(products))}
           productOptions={productOptions}
         />
