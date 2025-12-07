@@ -10,8 +10,12 @@ import {
   SummaryCardTitle,
   SummaryCardValue,
 } from "./_components/summary-card";
+import { getDashboard } from "./_data_access/dashboard/get-dashboard";
+import { formatCurrency } from "./_helpers/currency";
+const Home = async () => {
+  const { totalRevenue, todayRevenue, totalSales, totalStock, totalProducts } =
+    await getDashboard();
 
-export default function Home() {
   return (
     <div className="mx-8 my-8 w-full space-y-8 rounded-lg p-8">
       <div className="flex w-full items-center justify-between">
@@ -29,7 +33,7 @@ export default function Home() {
             <DollarSign />
           </SummaryCardIcon>
           <SummaryCardTitle>Receita Total</SummaryCardTitle>
-          <SummaryCardValue>1040</SummaryCardValue>
+          <SummaryCardValue>{formatCurrency(totalRevenue)}</SummaryCardValue>
         </SummaryCard>
 
         <SummaryCard>
@@ -37,7 +41,7 @@ export default function Home() {
             <DollarSign />
           </SummaryCardIcon>
           <SummaryCardTitle>Receita Hoje</SummaryCardTitle>
-          <SummaryCardValue>20.000</SummaryCardValue>
+          <SummaryCardValue>{formatCurrency(todayRevenue)}</SummaryCardValue>
         </SummaryCard>
       </div>
       <div className="grid grid-cols-3 gap-6">
@@ -46,23 +50,25 @@ export default function Home() {
             <CircleDollarSign />
           </SummaryCardIcon>
           <SummaryCardTitle>Vendas Totais</SummaryCardTitle>
-          <SummaryCardValue>20.000</SummaryCardValue>
+          <SummaryCardValue>{totalSales}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryCardIcon>
             <PackageIcon />
           </SummaryCardIcon>
           <SummaryCardTitle>Total em Estoque</SummaryCardTitle>
-          <SummaryCardValue>450</SummaryCardValue>
+          <SummaryCardValue>{totalStock}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryCardIcon>
             <ShoppingBasketIcon />
           </SummaryCardIcon>
           <SummaryCardTitle>Produtos</SummaryCardTitle>
-          <SummaryCardValue>250</SummaryCardValue>
+          <SummaryCardValue>{totalProducts}</SummaryCardValue>
         </SummaryCard>
       </div>
     </div>
   );
-}
+};
+
+export default Home;
