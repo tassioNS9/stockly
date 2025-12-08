@@ -75,7 +75,6 @@ export const upsertSale = actionClient
         });
       }
     });
-    revalidatePath("/sales");
-    revalidatePath("/products");
-    revalidatePath("/");
+    // O RevalidatePath com /, layout, revalida todas as páginas
+    revalidatePath("/", "layout");
   });

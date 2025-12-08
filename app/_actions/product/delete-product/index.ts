@@ -12,6 +12,6 @@ export const deleteProduct = async ({ id }: DeleteProductSchema) => {
       id,
     },
   });
-  revalidatePath("/products");
-  revalidatePath("/");
+  // O RevalidatePath com /, layout, revalida todas as páginas
+  revalidatePath("/", "layout");
 };

@@ -36,6 +36,6 @@ export const deleteSale = actionClient
         });
       }
     });
-    revalidatePath("/sales");
-    revalidatePath("/");
+    // O RevalidatePath com /, layout, revalida todas as páginas
+    revalidatePath("/", "layout");
   });
