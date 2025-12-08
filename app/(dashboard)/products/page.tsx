@@ -1,6 +1,6 @@
 import { productTableColumns } from "./_components/table-columns";
 import { DataTable } from "@/app/_components/ui/data-table";
-import { getProducts } from "@/app/_data_access/product/get-product";
+import { getProducts } from "@/app/_data_access/product/get-products";
 import CreateProductButton from "./_components/create-product-button";
 const ProductsPage = async () => {
   const products = await getProducts();

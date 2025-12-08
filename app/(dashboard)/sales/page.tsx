@@ -1,4 +1,4 @@
-import { getProducts } from "@/app/_data_access/product/get-product";
+import { getProducts } from "@/app/_data_access/product/get-products";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { DataTable } from "@/app/_components/ui/data-table";
 import UpsertSaleButton from "./_components/create-sale-button";

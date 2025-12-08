@@ -4,14 +4,18 @@ import "server-only";
 import { Product } from "@/app/generated/prisma/client";
 import { db } from "../../_lib/prisma";
 
-export interface ProductDto extends Product {
-  status: "IN_STOCK" | "OUT_OF_TOCK";
+export type ProductStatusDto = "IN_STOCK" | "OUT_OF_STOCK";
+
+export interface ProductDto extends Omit<Product, "price"> {
+  price: number;
+  status: ProductStatusDto;
 }
 
 export const getProducts = async (): Promise<ProductDto[]> => {
   const products = await db.product.findMany({});
   return products.map((product) => ({
     ...product,
-    status: product.stock > 0 ? "IN_STOCK" : "OUT_OF_TOCK",
+    price: Number(product.price),
+    status: product.stock > 0 ? "IN_STOCK" : "OUT_OF_STOCK",
   }));
 };

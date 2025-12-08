@@ -14,11 +14,14 @@ import { getDashboard } from "./_data_access/dashboard/get-dashboard";
 import { formatCurrency } from "./_helpers/currency";
 import RevenueChart from "./(dashboard)/_components/revenue-chart";
 import { getLast14DaysRevenue } from "./_data_access/dashboard/get-last-14-days-revenue";
+import { getMostSoldProducts } from "./_data_access/dashboard/get-most-sold-products";
+import MostSoldProductItem from "./(dashboard)/_components/most-sold-product-item";
 const Home = async () => {
   const { totalRevenue, todayRevenue, totalSales, totalStock, totalProducts } =
     await getDashboard();
 
   const totalLast14DaysRevenue = await getLast14DaysRevenue();
+  const mostSoldProducts = await getMostSoldProducts();
   return (
     <div className="mx-8 my-8 w-full space-y-8 rounded-lg p-8">
       <div className="flex w-full items-center justify-between">
@@ -76,6 +79,18 @@ const Home = async () => {
           <p className="text-lg font-semibold text-slate-900">Receita</p>
           <p className="text-sm text-slate-400">Últimos 14 dias</p>
           <RevenueChart data={totalLast14DaysRevenue} />
+        </div>
+
+        <div className="rouded-xl flex h-full flex-col overflow-hidden bg-white p-6">
+          <p className="p-6 text-lg font-semibold text-slate-900">
+            Produtos mais vendidos
+          </p>
+
+          <div className="mt-3 space-y-7 overflow-y-auto px-6 pb-6">
+            {mostSoldProducts.map((product) => (
+              <MostSoldProductItem key={product.productId} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

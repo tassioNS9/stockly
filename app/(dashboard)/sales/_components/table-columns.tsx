@@ -3,7 +3,7 @@
 import { formatCurrency } from "@/app/_helpers/currency";
 import { ColumnDef } from "@tanstack/react-table";
 import SalesTableDropdownMenu from "./table-dropdown-menu";
-import { ProductDto } from "@/app/_data_access/product/get-product";
+import { ProductDto } from "@/app/_data_access/product/get-products";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { SaleDto } from "@/app/_data_access/sale/get-sales";
 

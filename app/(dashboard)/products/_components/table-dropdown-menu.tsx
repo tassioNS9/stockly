@@ -17,14 +17,14 @@ import {
   MoreHorizontalIcon,
   TrashIcon,
 } from "lucide-react";
-import { Product } from "@/app/generated/prisma/client";
+import { ProductDto } from "@/app/_data_access/product/get-products";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 import DeleteProductDialogContent from "./delete-dialog-content";
 import { Button } from "@/app/_components/ui/button";
 import { useState } from "react";
 
 interface ProductTableDropdownMenuProps {
-  product: Product;
+  product: ProductDto;
 }
 const ProductTableDropdownMenu = ({
   product,
