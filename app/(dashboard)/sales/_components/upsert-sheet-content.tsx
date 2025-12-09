@@ -29,7 +29,6 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { formatCurrency } from "@/app/_helpers/currency";
-import { Product } from "@/app/generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -40,6 +39,7 @@ import SalesTableDropdownMenu from "./upsert-table-dropdown-menu";
 import { upsertSale } from "@/app/_actions/sale/upsert-sale";
 import { flattenValidationErrors } from "next-safe-action";
 import { toast } from "sonner";
+import { ProductDto } from "@/app/_data_access/product/get-products";
 
 const formSchema = z.object({
   productId: z.string().uuid({
@@ -59,7 +59,7 @@ interface SelectedProduct {
 
 interface UpsertSheetContentProps {
   saleId?: string;
-  products: Product[];
+  products: ProductDto[];
   productOptions: ComboboxOption[];
   setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
   defaultSelectedProducts?: SelectedProduct[];
