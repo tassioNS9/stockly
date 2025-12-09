@@ -1,5 +1,4 @@
 import {
-  DollarSign,
   CircleDollarSign,
   PackageIcon,
   ShoppingBasketIcon,
@@ -11,17 +10,16 @@ import {
   SummaryCardValue,
 } from "./_components/summary-card";
 import { getDashboard } from "./_data_access/dashboard/get-dashboard";
-import { formatCurrency } from "./_helpers/currency";
 import RevenueChart from "./(dashboard)/_components/revenue-chart";
 import { getLast14DaysRevenue } from "./_data_access/dashboard/get-last-14-days-revenue";
 import { getMostSoldProducts } from "./_data_access/dashboard/get-most-sold-products";
 import MostSoldProductItem from "./(dashboard)/_components/most-sold-product-item";
 import TotalRevenueCard from "./(dashboard)/_components/total-revenue-card";
 import { Suspense } from "react";
-import { Skeleton } from "./_components/ui/skeleton";
+import TodayRevenueCard from "./(dashboard)/_components/today-revenue-card";
+import { SummaryCardSkeleton } from "./(dashboard)/_components/summary-card";
 const Home = async () => {
-  const { totalRevenue, todayRevenue, totalSales, totalStock, totalProducts } =
-    await getDashboard();
+  const { totalSales, totalStock, totalProducts } = await getDashboard();
 
   const totalLast14DaysRevenue = await getLast14DaysRevenue();
   const mostSoldProducts = await getMostSoldProducts();
@@ -37,18 +35,12 @@ const Home = async () => {
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        <Suspense
-          fallback={<Skeleton className="rounded bg-white bg-opacity-75" />}
-        >
+        <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalRevenueCard />
         </Suspense>
-        <SummaryCard>
-          <SummaryCardIcon>
-            <DollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Receita Hoje</SummaryCardTitle>
-          <SummaryCardValue>{formatCurrency(todayRevenue)}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense fallback={<SummaryCardSkeleton />}>
+          <TodayRevenueCard />
+        </Suspense>
       </div>
       <div className="grid grid-cols-3 gap-6">
         <SummaryCard>
