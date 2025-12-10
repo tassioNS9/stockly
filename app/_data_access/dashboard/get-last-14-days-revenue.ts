@@ -1,5 +1,5 @@
 import { db } from "@/app/_lib/prisma";
-import { Decimal } from "@prisma/client/runtime/library";
+import { Prisma } from "@/app/generated/prisma/client";
 import dayjs from "dayjs";
 import "server-only";
 
@@ -18,7 +18,7 @@ export const getLast14DaysRevenue = async (): Promise<DayTotalRevenueDto[]> => {
   const totalLast14DaysRevenue: DayTotalRevenueDto[] = [];
   for (const day of last14Days) {
     const dayTotalRevenue = await db.$queryRawUnsafe<
-      { totalRevenue: Decimal }[]
+      { totalRevenue: Prisma.Decimal }[]
     >(
       `
       SELECT SUM("SaleProduct"."unitPrice" * "SaleProduct"."quantity") as "totalRevenue"
