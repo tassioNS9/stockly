@@ -3,12 +3,12 @@
 import { Button } from "@/app/_components/ui/button";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
 import UpsertSheetContent from "../_components/upsert-sheet-content";
-import { Product } from "@/app/generated/prisma/client";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { useState } from "react";
+import { ProductDto } from "@/app/_data_access/product/get-products";
 
 interface UpsertSaleButtonProps {
-  products: Product[];
+  products: ProductDto[];
   productOptions: ComboboxOption[];
 }
 const UpsertSaleButton = ({
@@ -22,6 +22,7 @@ const UpsertSaleButton = ({
         <Button>Adicionar Venda</Button>
       </SheetTrigger>
       <UpsertSheetContent
+        isOpen={sheetIsOpen}
         products={products}
         productOptions={productOptions}
         setSheetIsOpen={setSheetIsOpen}
